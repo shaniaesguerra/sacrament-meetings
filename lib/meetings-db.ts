@@ -1,4 +1,4 @@
-import type { SacramentMeeting } from './types';
+import type { MeetingType, SacramentMeeting } from './types';
 
 const meetings: SacramentMeeting[] = [
   {
@@ -99,9 +99,12 @@ const meetings: SacramentMeeting[] = [
 
 ];
 
-export function getMeetings(date?: string | null): SacramentMeeting[]{
-    if (date) return meetings.filter(m => m.date === date);
-    return meetings;
+export function getMeetings(date?: string | null, type?: MeetingType): SacramentMeeting[]{
+  return meetings.filter((m) => {
+    const matchedDate = !date || m.date === date;
+    const matchesType = !type || m.meetingType == type;
+    return matchedDate && matchesType;
+    })
 };
 
 export function getMeetingById(id: number): SacramentMeeting | null {

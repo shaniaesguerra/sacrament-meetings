@@ -1,8 +1,11 @@
-export type MeetingType =
-  | 'testimony'
-  | 'regular'
-  | 'stake'
-  | 'general';
+export const meetingTypes = [
+  'testimony',
+  'regular',
+  'stake',
+  'general'
+] as const;
+
+export type MeetingType = (typeof meetingTypes)[number];
 
 export interface Hymn {
   number: number;
@@ -34,4 +37,9 @@ export interface SacramentMeeting {
   speakers: SpeakerItem[];
   closingHymn: Hymn;
   closingPrayer: string;
+}
+
+//Function to check meeting type
+export function isMeetingType(value: string): value is MeetingType {
+  return meetingTypes.includes(value as MeetingType);
 }
