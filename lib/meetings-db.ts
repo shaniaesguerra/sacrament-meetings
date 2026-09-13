@@ -95,7 +95,23 @@ const meetings: SacramentMeeting[] = [
     closingHymn: { number: 163, title: "Lord, Dismiss Us with Thy Blessing" },
     closingPrayer: "Brother Stewart",
     announcements: ["Ward BBQ: June 14", "Ministering interviews ongoing"]
-  }
+  },
+  {
+    id: 6,
+    date: "2026-09-06",
+    meetingType: "regular",
+    presiding: "Bishop Smith",
+    conducting: "Brother Jones",
+    openingHymn: { number: 2, title: "The Spirit of God" },
+    openingPrayer: "Sister Williams",
+    wardBusiness: [],
+    stakeBusiness: false,
+    sacramentHymn: { number: 169, title: "In Remembrance of Thy Suffering" },
+    speakers: [],
+    closingHymn: { number: 31, title: "O God, Our Help in Ages Past" },
+    closingPrayer: "Brother Davis",
+    announcements: [],
+  } 
 
 ];
 
@@ -110,3 +126,19 @@ export function getMeetings(date?: string | null, type?: MeetingType): Sacrament
 export function getMeetingById(id: number): SacramentMeeting | null {
     return meetings.find(m => m.id === id) ?? null;  
 };
+
+export function getCurrentMeeting(): SacramentMeeting | null{
+  const today = new Date();
+  const dayOfWeek = today.getDay(); // Sunday = 0 , Saturday = 6
+  
+  const sunday = new Date(today);
+  sunday.setDate(today.getDate() - dayOfWeek);
+
+  const sundayDate = [
+    sunday.getFullYear(),
+    String(sunday.getMonth() + 1).padStart(2, "0"),
+    String(sunday.getDate()).padStart(2, "0"),
+  ].join("-");
+
+  return meetings.find(m => m.date === sundayDate) ?? null;
+}
