@@ -10,3 +10,4 @@ This is an application that is designed to help bishoprics and leaders to effici
 - Tailwind CSS
 - TypeScript
 - Vercel
+
