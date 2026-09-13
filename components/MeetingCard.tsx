@@ -24,15 +24,9 @@ export default function MeetingCard({
   meetingType,
   presiding,
   conducting,
-  announcements = [],
   openingHymn,
-  openingPrayer,
-  wardBusiness,
-  stakeBusiness,
   sacramentHymn,
-  speakers,
   closingHymn,
-  closingPrayer,
 }: MeetingCardProps) {
   const formattedDate = new Date(`${date}T00:00:00`).toLocaleDateString(
     "en-US",
@@ -72,65 +66,26 @@ export default function MeetingCard({
         </div>
       </dl>
 
-      <div className="space-y-3 border-t border-card/60 pt-4 text-sm">
-        <p>
-          <span className="font-semibold text-brand">Opening hymn:</span>{" "}
-          #{openingHymn.number} &ldquo;{openingHymn.title}&rdquo;
-        </p>
-        <p>
-          <span className="font-semibold text-brand">Opening prayer:</span>{" "}
-          {openingPrayer}
-        </p>
-        <p>
-          <span className="font-semibold text-brand">Sacrament hymn:</span>{" "}
-          #{sacramentHymn.number} &ldquo;{sacramentHymn.title}&rdquo;
-        </p>
-        <p>
-          <span className="font-semibold text-brand">Closing hymn:</span>{" "}
-          #{closingHymn.number} &ldquo;{closingHymn.title}&rdquo;
-        </p>
-        <p>
-          <span className="font-semibold text-brand">Closing prayer:</span>{" "}
-          {closingPrayer}
-        </p>
-      </div>
-
-      {(announcements.length > 0 ||
-        wardBusiness.length > 0 ||
-        stakeBusiness ||
-        speakers.length > 0) && (
-        <div className="mt-4 border-t border-card/60 pt-4 text-sm">
-          {announcements.length > 0 && (
-            <p>
-              <span className="font-semibold text-brand">Announcements:</span>{" "}
-              {announcements.join(" • ")}
-            </p>
-          )}
-          {wardBusiness.length > 0 && (
-            <p className="mt-2">
-              <span className="font-semibold text-brand">Ward business:</span>{" "}
-              {wardBusiness.map((item) => item.description).join(" • ")}
-            </p>
-          )}
-          {stakeBusiness && (
-            <p className="mt-2 font-semibold text-brand">
-              Stake business included
-            </p>
-          )}
-          {speakers.length > 0 && (
-            <p className="mt-2">
-              <span className="font-semibold text-brand">Program:</span>{" "}
-              {speakers
-                .map((speaker) =>
-                  speaker.topic
-                    ? `${speaker.name} - ${speaker.topic}`
-                    : speaker.name,
-                )
-                .join(" • ")}
-            </p>
-          )}
+      <dl className="space-y-3 border-y border-card/60 py-4 text-sm">
+        <div className="grid gap-1 sm:grid-cols-[8rem_1fr] sm:gap-4">
+          <dt className="font-semibold text-brand">Opening hymn</dt>
+          <dd>
+            #{openingHymn.number} &ldquo;{openingHymn.title}&rdquo;
+          </dd>
         </div>
-      )}
+        <div className="grid gap-1 sm:grid-cols-[8rem_1fr] sm:gap-4">
+          <dt className="font-semibold text-brand">Sacrament hymn</dt>
+          <dd>
+            #{sacramentHymn.number} &ldquo;{sacramentHymn.title}&rdquo;
+          </dd>
+        </div>
+        <div className="grid gap-1 sm:grid-cols-[8rem_1fr] sm:gap-4">
+          <dt className="font-semibold text-brand">Closing hymn</dt>
+          <dd>
+            #{closingHymn.number} &ldquo;{closingHymn.title}&rdquo;
+          </dd>
+        </div>
+      </dl>
 
       <div className="mt-auto pt-5">
         <Link
