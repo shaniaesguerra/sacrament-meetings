@@ -5,7 +5,7 @@ export async function GET() {
 
     if (!meeting) {
         return Response.json(
-            { error: "No neeting found for the current Sunday." },
+            { error: "No meeting found for the current Sunday." },
             { status: 404 }
         );
     };
