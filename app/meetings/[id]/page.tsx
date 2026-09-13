@@ -6,13 +6,10 @@ type MeetingPageProps = {
   params: Promise<{ id: string }>;
 };
 
-export default async function MeetingPage({
-  params,
-}: MeetingPageProps) {
+export default async function MeetingPage({params}:MeetingPageProps) {
   const { id } = await params;
-
   const response = await fetch(
-    `http://localhost:3000/api/meetings/${id}`,
+    `${process.env.APP_URL}/api/meetings/${id}`,
     {
       cache: "no-store",
     },
