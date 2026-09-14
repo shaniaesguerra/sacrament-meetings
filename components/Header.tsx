@@ -16,18 +16,18 @@ export default function Header() {
 
             <div
             id="header-title"
-            className="text-lg font-bold uppercase tracking-wide text-foreground sm:text-lg"
+            className="font-sans text-lg font-bold tracking-wider uppercase text-foreground sm:text-lg"
             >
                 Sacrament Meeting Planner
             </div>
                     
         </div>
               
-        <div className="font-mono justify self-center">
+        <div className="font-mono text-lg bg-card/40 px-4 py-2 rounded-full font-semibold text-brand justify self-center">
             Wildrose Ward    
         </div>
 
-        <div className="w-full rounded-full bg-card/40 px-4 py-2 sm:px-5 md:w-auto">
+        <div className="w-full rounded-full px-4 py-2 sm:px-5 md:w-auto">
             <NavLinks />
         </div>
     </nav>
