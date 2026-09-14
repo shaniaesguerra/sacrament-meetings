@@ -1,0 +1,45 @@
+export const meetingTypes = [
+  'testimony',
+  'regular',
+  'stake',
+  'general'
+] as const;
+
+export type MeetingType = (typeof meetingTypes)[number];
+
+export interface Hymn {
+  number: number;
+  title: string;
+}
+
+export interface SpeakerItem {
+  name: string;
+  topic: string;
+  type: 'speaker' | 'musical-number';
+}
+
+export interface WardBusinessItem {
+  description: string;
+}
+
+export interface SacramentMeeting {
+  id: number;
+  date: string;              // ISO date string: 'YYYY-MM-DD'
+  meetingType: MeetingType;
+  presiding: string;
+  conducting: string;
+  announcements?: string[];
+  openingHymn: Hymn;
+  openingPrayer: string;
+  wardBusiness: WardBusinessItem[];
+  stakeBusiness: boolean;
+  sacramentHymn: Hymn;
+  speakers: SpeakerItem[];
+  closingHymn: Hymn;
+  closingPrayer: string;
+}
+
+//Function to check meeting type
+export function isMeetingType(value: string): value is MeetingType {
+  return meetingTypes.includes(value as MeetingType);
+}
