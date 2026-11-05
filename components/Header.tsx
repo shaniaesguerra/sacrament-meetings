@@ -1,5 +1,6 @@
 import Link from "next/link";
 import NavLinks from "./NavLinks";
+import Image from "next/image";
 
 export default function Header() { 
     return (
@@ -11,9 +12,14 @@ export default function Header() {
                 className="flex items-center gap-3"
                 >
                     <div className="h-8 w-8 rounded-lg bg-primary">
-                        
+                        <Image
+                            src="/images/icon.jpeg"
+                            alt="Sacrament Meeting Planner Logo"
+                            width={40}
+                            height={40}
+                            className="rounded-md object-cover"
+                            />
                     </div>
-
                     <div>
                         <p className="font-semibold text-foreground">
                         Sacrament Meeting Planner
@@ -25,11 +31,11 @@ export default function Header() {
 
                 <div className="flex items-center gap-3">
                     <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white">
-                        JS
+                        SE
                     </div>
 
                     <span className="hidden text-sm text-text-secondary md:block">
-                        John Smith
+                        Shania Esguerra
                     </span>
                 </div>
             </div>
