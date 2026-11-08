@@ -1,8 +1,11 @@
+import { connection } from "next/server";
 import { notFound } from "next/navigation";
 import MeetingDetail from "@/components/MeetingDetail";
 import { getCurrentMeeting } from "@/lib/meetings-db";
 
-export default function CurrentMeetingPage() {
+export default async function CurrentMeetingPage() {
+  await connection();
+
   const meeting = getCurrentMeeting();
 
   if (!meeting) {
