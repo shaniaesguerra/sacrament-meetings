@@ -1,6 +1,7 @@
 import Link from "next/link";
 import NavLinks from "./NavLinks";
 import Image from "next/image";
+import { Suspense } from "react";
 
 export default function Header() { 
     return (
@@ -27,7 +28,9 @@ export default function Header() {
                     </div>
                 </Link>
 
+                <Suspense fallback ={null}>
                     <NavLinks />
+                </Suspense>
 
                 <div className="flex items-center gap-3">
                     <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white">

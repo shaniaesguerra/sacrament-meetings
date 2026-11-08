@@ -35,3 +35,13 @@ export interface SacramentMeeting {
   closingHymn: Hymn;
   closingPrayer: string;
 }
+
+
+export function isMeetingType(value: string): value is MeetingType {
+  return (
+    value === "testimony" ||
+    value === "regular" ||
+    value === "stake" ||
+    value === "general"
+  );
+}

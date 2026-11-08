@@ -117,10 +117,34 @@ const meetings: SacramentMeeting[] = [
 ];
 
 export function getAllMeetings(date?: string | null): SacramentMeeting[] {
-    if (date) return meetings.filter(meeting => meeting.date === date);
+    if (date !== undefined && date !== null) {
+        return meetings.filter(meeting => meeting.date === date);
+    }
+    
     return meetings;
 }
 
 export function getMeetingById(id: number): SacramentMeeting | null {
     return meetings.find(meeting => meeting.id === id) ?? null;
+}
+
+export function getCurrentMeeting(): SacramentMeeting | null {
+  const today = new Date();
+
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - today.getDay());
+
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+  return (
+    meetings.find((meeting) => {
+      const meetingDate = new Date(meeting.date);
+
+      return (
+        meetingDate >= startOfWeek &&
+        meetingDate <= endOfWeek
+      );
+    }) ?? null
+  );
 }
