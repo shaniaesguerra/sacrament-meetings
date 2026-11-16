@@ -137,14 +137,15 @@ export function getCurrentMeeting(): SacramentMeeting | null {
   const endOfWeek = new Date(startOfWeek);
   endOfWeek.setDate(startOfWeek.getDate() + 6);
 
-  return (
-    meetings.find((meeting) => {
-      const meetingDate = new Date(meeting.date);
+  const formatLocalDate = (date: Date) =>
+    `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 
-      return (
-        meetingDate >= startOfWeek &&
-        meetingDate <= endOfWeek
-      );
-    }) ?? null
+  const startDate = formatLocalDate(startOfWeek);
+  const endDate = formatLocalDate(endOfWeek);
+
+  return (
+    meetings.find(
+      (meeting) => meeting.date >= startDate && meeting.date <= endDate
+    ) ?? null
   );
 }

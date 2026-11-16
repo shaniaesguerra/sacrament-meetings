@@ -12,6 +12,10 @@ const links = [
     href: "/meetings",
     label: "Meetings",
   },
+  {
+    href: "/meetings/current",
+    label: "Current Meeting",
+  }
 ];
 
 export default function NavLinks() {
@@ -23,8 +27,9 @@ export default function NavLinks() {
         {links.map((link) => {
           const isActive =
             pathname === link.href ||
-            (link.href !== "/" &&
-              pathname.startsWith(link.href));
+            (link.href === "/meetings" &&
+              pathname.startsWith("/meetings/") &&
+              pathname !== "/meetings/current");
 
           return (
             <li key={link.href}>
