@@ -12,7 +12,7 @@ export async function GET(request:NextRequest,{ params }: { params: Promise<{ id
         );
     };
 
-    const meeting = getMeetingById(meetingId);
+    const meeting = await getMeetingById(meetingId);
     if (!meeting) {
         return Response.json(
             { error: "Meeting not found." },

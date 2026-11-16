@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAllMeetings } from "@/lib/meetings-db";
 import { isMeetingType } from "@/lib/types";
 
-export function GET(request: NextRequest) {
+export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
-  const date = searchParams.get("date");
+  const query = searchParams.get("query")?? "";
   const type = searchParams.get("type");
 
   if (type !== null && !isMeetingType(type)) {
@@ -14,7 +14,7 @@ export function GET(request: NextRequest) {
     );
   }
 
-  const meetings = getAllMeetings(date);
+  const meetings = await getAllMeetings(query);
   const filteredMeetings =
     type === null
       ? meetings

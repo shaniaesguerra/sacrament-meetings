@@ -1,10 +1,25 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import MeetingCard from "@/components/MeetingCard";
 import { getAllMeetings } from "@/lib/meetings-db";
 import Image from "next/image";
 
 export default function Home() {
-  const meetings = getAllMeetings();
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-background px-6 py-10">
+          <p>Loading the dashboard…</p>
+        </main>
+      }
+    >
+      <HomeContent />
+    </Suspense>
+  );
+}
+
+async function HomeContent() {
+  const meetings = await getAllMeetings();
   const totalMeetings = meetings.length;
   const scheduledSpeakers = meetings.reduce(
     (count, meeting) => count + meeting.speakers.filter(
