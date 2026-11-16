@@ -32,9 +32,12 @@ export default function Home() {
           <Image
             src="/images/hero.jpeg"
             alt="Salt Lake Temple"
-            fill
             priority
             className="object-cover"
+            width={0}
+            height={0}
+            sizes="100vw"
+            style={{ width: '100%', height: 'auto' }}
           />
         </div>
         {/* Dark Overlay */}
