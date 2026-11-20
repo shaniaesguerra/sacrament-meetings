@@ -1,26 +1,113 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base */
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-secondary: #f1f5f9;
+
+  /* Text */
+  --foreground: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #475569;
+
+  /* Brand */
+  --primary: #004a7a;
+  --primary-hover: #00375a;
+
+  /* Status */
+  --success: #166534;
+  --success-bg: #dcfce7;
+
+  --warning: #92400e;
+  --warning-bg: #fef3c7;
+
+  --danger: #991b1b;
+  --danger-bg: #fee2e2;
+
+  /* UI */
+  --border: #cbd5e1;
+  --border-strong: #94a3b8;
+  --focus: #005a9c;
+}
+
+.dark {
+  /* Base */
+  --background: #0b1120;
+  --surface: #111827;
+  --surface-secondary: #1e293b;
+
+  /* Text */
+  --foreground: #f8fafc;
+  --text-secondary: #e2e8f0;
+  --text-muted: #cbd5e1;
+
+  /* Brand */
+  --primary: #93c5fd;
+  --primary-hover: #bfdbfe;
+
+  /* Status */
+  --success: #86efac;
+  --success-bg: #064e3b;
+
+  --warning: #fcd34d;
+  --warning-bg: #78350f;
+
+  --danger: #fca5a5;
+  --danger-bg: #7f1d1d;
+
+  /* UI */
+  --border: #475569;
+  --border-strong: #64748b;
+  --focus: #60a5fa;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-secondary: var(--surface-secondary);
+
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-focus: var(--focus);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+* {
+  border-color: var(--border);
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  transition: all 0.2s ease;
 }
