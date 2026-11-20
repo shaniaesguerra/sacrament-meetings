@@ -3,8 +3,8 @@ import MeetingCard from "@/components/MeetingCard";
 import { MeetingSearch } from "@/components/MeetingSearch";
 import { Pagination } from "@/components/Pagination";
 import {
-  getAllMeetings,
-  getMeetingTotalPages,
+  getMeetings,
+  getMeetingsTotalPages,
 } from "@/lib/meetings-db";
 
 type MeetingsPageProps = {
@@ -46,8 +46,8 @@ async function MeetingsResults({ searchParams }: MeetingsPageProps) {
       : 1;
 
   const [meetings, totalPages] = await Promise.all([
-    getAllMeetings(query, currentPage),
-    getMeetingTotalPages(query),
+    getMeetings(query, currentPage),
+    getMeetingsTotalPages(query),
   ]);
 
   return (
