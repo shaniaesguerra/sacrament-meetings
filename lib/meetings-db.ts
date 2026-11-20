@@ -10,7 +10,7 @@ export async function getAllMeetings(query: string = '', currentPage: number = 1
     const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
     const rows = await sql`
-    SELECT
+   const USER_COLUMNS = []. 
       id,
       to_char(date, 'YYYY-MM-DD') AS "date",
       meeting_type                AS "meetingType",
