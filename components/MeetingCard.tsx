@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SacramentMeeting } from "@/lib/types";
+import { deleteMeeting } from "@/lib/actions";
 
 type MeetingCardProps = {
     meeting: SacramentMeeting;
@@ -7,8 +8,8 @@ type MeetingCardProps = {
 
 export default function MeetingCard({ meeting }: MeetingCardProps) {
     return (
-        <Link href={`/meetings/${meeting.id}`}>
-            <article className="rounded-2xl border border-border bg-surface p-5 shadow-sm transition hover:border-primary hover:shadow-md">
+        <article className="rounded-2xl border border-border bg-surface p-5 shadow-sm transition hover:border-primary hover:shadow-md">
+            <Link href={`/meetings/${meeting.id}`} className="block">
                 <p className="text-sm text-text-secondary">
                 {new Date(meeting.date).toLocaleDateString()}
                 </p>
@@ -38,7 +39,24 @@ export default function MeetingCard({ meeting }: MeetingCardProps) {
                     </span>
                 )}
                 </div>
-            </article>
-        </Link>  
+            </Link>
+            <div className="mt-5 flex items-center justify-between">
+                <Link
+                    className="text-sm font-medium text-primary hover:underline"
+                    href={`/meetings/${meeting.id}/edit`}
+                >
+                    Edit
+                </Link>
+                <form action={deleteMeeting}>
+                    <input type="hidden" name="id" value={meeting.id} />
+                    <button
+                        className="text-sm font-medium text-red-700 hover:underline"
+                        type="submit"
+                    >
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </article>
     );
 }

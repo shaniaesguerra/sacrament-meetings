@@ -36,6 +36,8 @@ export interface SacramentMeeting {
   closingPrayer: string;
 }
 
+export type NewSacramentMeeting = Omit<SacramentMeeting, 'id'>;
+
 
 export function isMeetingType(value: string): value is MeetingType {
   return (

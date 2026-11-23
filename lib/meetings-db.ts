@@ -1,5 +1,5 @@
 import { neon } from '@neondatabase/serverless';
-import type { SacramentMeeting } from './types';
+import type { NewSacramentMeeting, SacramentMeeting } from './types';
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -18,6 +18,12 @@ const MEETING_COLUMNS = sql.unsafe(`
   closing_hymn                AS "closingHymn",
   closing_prayer              AS "closingPrayer"
 `);
+
+function assertValidMeetingId(id: number): void {
+  if (!Number.isSafeInteger(id) || id <= 0) {
+    throw new RangeError('Meeting ID must be a positive safe integer.');
+  }
+}
 
 export async function getAllMeetings(query: string = ''): Promise<SacramentMeeting[]> {
     const searchTerm = `%${query}%`;
@@ -88,6 +94,93 @@ export async function getCurrentMeeting(): Promise<SacramentMeeting | null>{
   `;
 
   return (rows[0] as unknown as SacramentMeeting) ?? null;
+}
+
+export async function createMeeting(meeting: NewSacramentMeeting): Promise<number> {
+  const rows = await sql`
+    INSERT INTO meetings (
+      date,
+      meeting_type,
+      presiding,
+      conducting,
+      announcements,
+      opening_hymn,
+      opening_prayer,
+      ward_business,
+      stake_business,
+      sacrament_hymn,
+      speakers,
+      closing_hymn,
+      closing_prayer
+    )
+    VALUES (
+      ${meeting.date},
+      ${meeting.meetingType},
+      ${meeting.presiding},
+      ${meeting.conducting},
+      ${meeting.announcements ?? []},
+      ${JSON.stringify(meeting.openingHymn)},
+      ${meeting.openingPrayer},
+      ${JSON.stringify(meeting.wardBusiness)},
+      ${meeting.stakeBusiness},
+      ${JSON.stringify(meeting.sacramentHymn)},
+      ${JSON.stringify(meeting.speakers)},
+      ${JSON.stringify(meeting.closingHymn)},
+      ${meeting.closingPrayer}
+    )
+    RETURNING id
+  `;
+
+  if (!rows[0]) {
+    throw new Error('Creating the meeting did not return an ID.');
+  }
+
+  return Number(rows[0].id);
+}
+
+export async function updateMeeting(
+  id: number,
+  meeting: NewSacramentMeeting,
+): Promise<void> {
+  assertValidMeetingId(id);
+
+  const rows = await sql`
+    UPDATE meetings
+    SET
+      date = ${meeting.date},
+      meeting_type = ${meeting.meetingType},
+      presiding = ${meeting.presiding},
+      conducting = ${meeting.conducting},
+      announcements = ${meeting.announcements ?? []},
+      opening_hymn = ${JSON.stringify(meeting.openingHymn)},
+      opening_prayer = ${meeting.openingPrayer},
+      ward_business = ${JSON.stringify(meeting.wardBusiness)},
+      stake_business = ${meeting.stakeBusiness},
+      sacrament_hymn = ${JSON.stringify(meeting.sacramentHymn)},
+      speakers = ${JSON.stringify(meeting.speakers)},
+      closing_hymn = ${JSON.stringify(meeting.closingHymn)},
+      closing_prayer = ${meeting.closingPrayer}
+    WHERE id = ${id}
+    RETURNING id
+  `;
+
+  if (!rows[0]) {
+    throw new Error(`Meeting ${id} was not found.`);
+  }
+}
+
+export async function deleteMeeting(id: number): Promise<void> {
+  assertValidMeetingId(id);
+
+  const rows = await sql`
+    DELETE FROM meetings
+    WHERE id = ${id}
+    RETURNING id
+  `;
+
+  if (!rows[0]) {
+    throw new Error(`Meeting ${id} was not found.`);
+  }
 }
 
 export async function getMeetingsTotalPages(query: string = ""): Promise<number> {
