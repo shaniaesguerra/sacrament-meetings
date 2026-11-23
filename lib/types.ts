@@ -38,6 +38,29 @@ export interface SacramentMeeting {
 
 export type NewSacramentMeeting = Omit<SacramentMeeting, 'id'>;
 
+export type MeetingFormField =
+  | 'date'
+  | 'meetingType'
+  | 'presiding'
+  | 'conducting'
+  | 'announcements'
+  | 'openingHymnNumber'
+  | 'openingHymnTitle'
+  | 'openingPrayer'
+  | 'wardBusiness'
+  | 'stakeBusiness'
+  | 'sacramentHymnNumber'
+  | 'sacramentHymnTitle'
+  | 'speakers'
+  | 'closingHymnNumber'
+  | 'closingHymnTitle'
+  | 'closingPrayer';
+
+export type MeetingActionState = {
+  message: string | null;
+  errors: Partial<Record<MeetingFormField, string[]>>;
+};
+
 
 export function isMeetingType(value: string): value is MeetingType {
   return (

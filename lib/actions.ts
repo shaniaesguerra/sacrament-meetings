@@ -8,6 +8,7 @@ import {
   deleteMeeting as removeMeeting,
   updateMeeting as saveMeeting,
 } from './meetings-db';
+import type { MeetingActionState } from './types';
 
 const meetingTypes = ['testimony', 'regular', 'stake', 'general'] as const;
 const speakerTypes = ['speaker', 'musical-number'] as const;
@@ -47,6 +48,7 @@ const MeetingFormSchema = z.object({
         if (fields.length > 3 || !fields[0] || invalidType) {
           context.addIssue({
             code: 'custom',
+            path: ['speakers'],
             message: `Speaker line ${index + 1} must be "name | topic | speaker" or "name | topic | musical-number".`,
           });
         }
@@ -115,16 +117,17 @@ function getRawMeetingFormValues(formData: FormData) {
   };
 }
 
-function throwInvalidFormError(issues: { path: PropertyKey[]; message: string }[]): never {
-  const details = issues
-    .map(({ path, message }) => `${path.join('.') || 'meeting'}: ${message}`)
-    .join('; ');
-  throw new Error(`Please correct the meeting form: ${details}`);
-}
-
-export async function createMeeting(formData: FormData): Promise<void> {
+export async function createMeeting(
+  _prevState: MeetingActionState,
+  formData: FormData,
+): Promise<MeetingActionState> {
   const result = MeetingFormSchema.safeParse(getRawMeetingFormValues(formData));
-  if (!result.success) throwInvalidFormError(result.error.issues);
+  if (!result.success) {
+    return {
+      message: 'Please correct the highlighted fields.',
+      errors: result.error.flatten().fieldErrors,
+    };
+  }
 
   try {
     await insertMeeting(result.data);
@@ -138,12 +141,26 @@ export async function createMeeting(formData: FormData): Promise<void> {
   redirect('/meetings');
 }
 
-export async function updateMeeting(id: number, formData: FormData): Promise<void> {
+export async function updateMeeting(
+  id: number,
+  _prevState: MeetingActionState,
+  formData: FormData,
+): Promise<MeetingActionState> {
   const parsedId = MeetingIdSchema.safeParse(id);
-  if (!parsedId.success) throwInvalidFormError(parsedId.error.issues);
+  if (!parsedId.success) {
+    return {
+      message: 'This meeting ID is invalid.',
+      errors: {},
+    };
+  }
 
   const result = MeetingFormSchema.safeParse(getRawMeetingFormValues(formData));
-  if (!result.success) throwInvalidFormError(result.error.issues);
+  if (!result.success) {
+    return {
+      message: 'Please correct the highlighted fields.',
+      errors: result.error.flatten().fieldErrors,
+    };
+  }
 
   try {
     await saveMeeting(parsedId.data, result.data);
@@ -159,7 +176,9 @@ export async function updateMeeting(id: number, formData: FormData): Promise<voi
 
 export async function deleteMeeting(formData: FormData): Promise<void> {
   const parsedId = MeetingIdSchema.safeParse(formData.get('id'));
-  if (!parsedId.success) throwInvalidFormError(parsedId.error.issues);
+  if (!parsedId.success) {
+    throw new Error('Could not delete the meeting because its ID is invalid.');
+  }
 
   try {
     await removeMeeting(parsedId.data);
